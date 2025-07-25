@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
-from langserve import add_routes
+from pydantic import BaseModel
+from extract import chain, Data
 
 app = FastAPI()
 
@@ -9,9 +10,16 @@ app = FastAPI()
 async def redirect_root_to_docs():
     return RedirectResponse("/docs")
 
+class ExtractRequest(BaseModel):
+    text: str
 
-# Edit this to add the chain you want to add
-add_routes(app, NotImplemented)
+class ExtractResponse(Data):
+    pass
+
+@app.post("/extract", response_model=ExtractResponse)
+async def extract_people(request: ExtractRequest):
+    result = chain.invoke({"text": request.text})
+    return result
 
 if __name__ == "__main__":
     import uvicorn
