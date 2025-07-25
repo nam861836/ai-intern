@@ -1,21 +1,18 @@
-FROM python:3.11-slim
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim
 
-RUN pip install poetry==1.6.1
+# Set the working directory
+WORKDIR /app
 
-RUN poetry config virtualenvs.create false
+# Copy requirements and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-WORKDIR /code
+# Copy the rest of your code
+COPY . .
 
-COPY ./pyproject.toml ./README.md ./poetry.lock* ./
+# Expose the port FastAPI runs on
+EXPOSE 8000
 
-COPY ./package[s] ./packages
-
-RUN poetry install  --no-interaction --no-ansi --no-root
-
-COPY ./app ./app
-
-RUN poetry install --no-interaction --no-ansi
-
-EXPOSE 8080
-
-CMD exec uvicorn app.server:app --host 0.0.0.0 --port 8080
+# Command to run the app with uvicorn
+CMD ["uvicorn", "ai-intern.key-data-extraction.app.server:app", "--host", "0.0.0.0", "--port", "8000"]
