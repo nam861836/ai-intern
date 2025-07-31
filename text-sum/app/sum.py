@@ -28,9 +28,10 @@ prompt = ChatPromptTemplate.from_messages(
 
 # Instantiate chain
 chain = create_stuff_documents_chain(llm, prompt)
-
+print(chain.get_prompts()[1])
 # Invoke chain
 result = chain.invoke({"context": docs})
+print(result)
 
 #for token in chain.stream({"context": docs}):
 #    print(token, end="|")

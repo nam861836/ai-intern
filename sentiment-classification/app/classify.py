@@ -34,8 +34,9 @@ class Classification(BaseModel):
 
 llm = ChatOpenAI(model=model, temperature=temperature).with_structured_output(schema= Classification)
 tagging_chain = tagging_prompt | llm
-'''
+
 trump_follower = "I'm confident that President Trump's leadership and track record will once again resonate with Americans. His strong stance on economic growth and national security is exactly what our country needs at this pivotal moment. We need to bring back the proven leadership that can make America great again!"
+print("Comment: ", trump_follower)
 print(tagging_chain.invoke({"input": trump_follower}))
-'''
+
 

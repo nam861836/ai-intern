@@ -60,7 +60,7 @@ Answer: """
 )
 
 # First, generate and extract the SQL query
-question = "List the species of trees that are present in San Francisco"
+question = "Rank top 5 food in Thailand"
 raw_response = write_query.invoke({"question": question})
 sql_query = extract_sql(raw_response)
 
