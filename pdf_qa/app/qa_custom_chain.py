@@ -4,16 +4,20 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from typing import Optional, List
 from pydantic import BaseModel, Field
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.chains import LLMChain, create_sql_query_chain,  create_retrieval_chain
-from langchain_community.utilities import SQLDatabase
-from langchain_community.tools import QuerySQLDataBaseTool
 
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
+from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
-from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_core.output_parsers import StrOutputParser
+
+
+from sentence_transformers import CrossEncoder
+from langchain_core.documents import Document
+
+from langchain_community.retrievers import BM25Retriever
+from langchain.retrievers import EnsembleRetriever
 
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())
@@ -30,11 +34,10 @@ def load_and_split_pdf(file_path: str):
     split_docs = splitter.split_documents(docs)
     return split_docs
 
-def create_retriever(documents):
+def create_vectorstore(documents):
     embeddings = OpenAIEmbeddings(model = embed_model)
     vectorstore = Chroma.from_documents(documents, embeddings)
-    retriever = vectorstore.as_retriever()
-    return retriever
+    return vectorstore
 
 
 
@@ -58,13 +61,23 @@ prompt = ChatPromptTemplate.from_messages(
 llm = ChatOpenAI(model= model, temperature= temperature)
 
 docs = load_and_split_pdf("../data/eva.pdf")
-retriever = create_retriever(docs)
+vectorstore = create_vectorstore(docs)
 
-question_answer_chain = create_stuff_documents_chain(llm, prompt)
+bm25 = BM25Retriever.from_documents(docs)
+dense = vectorstore.as_retriever()
 
-rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+hybrid = EnsembleRetriever(retrievers=[dense, bm25], weights=[0.5, 0.5])
 
-print(type(rag_chain))
+def retrieve_context(inputs: dict):
+    query = inputs["input"]
+    retrieved_docs = hybrid.get_relevant_documents(query)
+    context = "\n\n".join([doc.page_content for doc in retrieved_docs])
+    return {"input": query, "context": context}
 
-results = rag_chain.invoke({"input": "How many strategies are there to evaluate a RAG system?"})
-print(results["answer"])
+retrieval_chain = RunnableLambda(retrieve_context)
+
+chain = retrieval_chain | prompt | llm | StrOutputParser()
+
+query = "What are the strategies to evaluate a RAG system?"
+response = chain.invoke({"input": query})
+print(response)
