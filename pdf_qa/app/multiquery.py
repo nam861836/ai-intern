@@ -14,6 +14,8 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_core.output_parsers import StrOutputParser
+from langchain.load import dumps, loads
+
 
 
 from sentence_transformers import CrossEncoder
@@ -48,7 +50,7 @@ system_prompt = (
     "You are an assistant for question-answering tasks. "
     "Use the following pieces of retrieved context to answer "
     "the question. If you don't know the answer, say that you "
-    "don't know. Use three to five sentences maximum and keep the "
+    "don't know. Use five sentences maximum and keep the "
     "answer concise."
     "\n\n"
     "{context}"
@@ -60,6 +62,13 @@ prompt = ChatPromptTemplate.from_messages(
         ("human", "{input}"),
     ]
 )
+
+template = """You are an AI language model assistant. Your task is to generate five 
+different versions of the given user question to retrieve relevant documents from a vector 
+database. By generating multiple perspectives on the user question, your goal is to help
+the user overcome some of the limitations of the distance-based similarity search. 
+Provide these alternative questions separated by newlines. Original question: {question}"""
+prompt_perspectives = ChatPromptTemplate.from_template(template)
 
 llm = ChatOpenAI(model= model, temperature= temperature)
 
@@ -73,40 +82,48 @@ hybrid = EnsembleRetriever(retrievers=[dense, bm25], weights=[0.7, 0.3])
 
 reranker = CrossEncoder('cross-encoder/ms-marco-TinyBERT-L2-v2')
 
+generate_queries = (
+    prompt_perspectives 
+    | llm
+    | StrOutputParser() 
+    | (lambda x: x.split("\n"))
+)
+
 # --- Retrieval + Rerank logic ---
-def retrieve_and_rerank(inputs: dict):
-    query = inputs["input"]
+def multi_query_retrieve_and_rerank(inputs: dict):
+    question = inputs["input"]
     
-    # Step 1: Retrieve
-    retrieved_docs = hybrid.invoke(query)
-
-    # Step 2: Prepare input pairs (query, doc)
-    pairs = [(query, doc.page_content) for doc in retrieved_docs]
-
-    # Step 3: Score with reranker
-    scores = reranker.predict(pairs, show_progress_bar= True)
-
-    # Step 4: Sort and select top-N (e.g., top 4)
-    reranked = sorted(zip(retrieved_docs, scores), key=lambda x: x[1], reverse=True)
-
-    print("\n--- Retrieved and Reranked Documents ---")
-    for i, (doc, score) in enumerate(reranked):
-        print(f"Rank {i+1} | Score: {score:.4f}")
-        print(f"Content: {doc.page_content[:300]}...") 
-        print("-" * 80)
-
-    # Step 5: Concatenate top-N context
-    top_docs = [doc for doc, _ in reranked[:4]]
+    # Step 1: Generate multiple queries
+    sub_queries = generate_queries.invoke({"question": question})
+    print(sub_queries)
+    
+    # Step 2: Retrieve docs for each sub-query
+    all_docs = []
+    for q in sub_queries:
+        docs = hybrid.get_relevant_documents(q)
+        all_docs.extend(docs)
+    
+    # Step 3: Remove duplicates
+    flattened = list(set(dumps(doc) for doc in all_docs))
+    unique_docs = [loads(doc) for doc in flattened]
+    
+    # Step 4: Rerank with original question
+    pairs = [(question, doc.page_content) for doc in unique_docs]
+    scores = reranker.predict(pairs)
+    
+    # Step 5: Sort and select top 4
+    reranked = sorted(zip(unique_docs, scores), key=lambda x: x[1], reverse=True)
+    top_docs = [doc for doc, _ in reranked[:10]]
     context = "\n\n".join([doc.page_content for doc in top_docs])
     
-    return {"input": query, "context": context}
+    return {"input": question, "context": context}
 
+retrieval_chain = RunnableLambda(multi_query_retrieve_and_rerank)
 
-# --- Chain definition ---
-retrieval_chain = RunnableLambda(retrieve_and_rerank)
-chain = retrieval_chain | prompt | llm | StrOutputParser()
+# Final chain
+final_chain = retrieval_chain | prompt | llm | StrOutputParser()
 
-# --- Run query ---
-query = "What are the strategies to evaluate a RAG system?"
-response = chain.invoke({"input": query})
+# Run
+response = final_chain.invoke({"input": "What are the strategies to evaluate a RAG system?"})
 print(response)
+
