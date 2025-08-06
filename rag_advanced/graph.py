@@ -2,7 +2,7 @@ from langgraph.graph import StateGraph
 from schema import GraphState
 from router_node import route_query
 from tools.tavily_search import tavily_search_tool
-from tools.sql_tool import query_sql_tool
+from tools.sql_tool import db_query
 from tools.vectordb_tool import RAG
 from langgraph.graph import END, START, StateGraph
 
@@ -12,7 +12,7 @@ def create_langgraph():
     builder = StateGraph(GraphState)
 
     builder.add_node("router", route_query)
-    builder.add_node("sql_tool", query_sql_tool)
+    builder.add_node("sql_tool", db_query)
     builder.add_node("tavily_tool", tavily_search_tool)
     builder.add_node("vectordb_tool", RAG)
 

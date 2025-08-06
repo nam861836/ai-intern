@@ -54,15 +54,11 @@ def RAG(state):
     vectorstore = create_vectorstore(split_docs)
 
     context = ensemble(split_docs, vectorstore, query)
-    print("1")
     prompt = ChatPromptTemplate.from_template(POLICY_PROMPT)
-    print("2")
     qa_chain = create_stuff_documents_chain(llm, prompt)
-    print("3")
     rag_response = qa_chain.invoke({
         "input": query,
         "context": context
     })
-    print("4")
     print(type(rag_response))
     return {"input": query, "output": rag_response}
