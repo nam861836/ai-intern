@@ -18,6 +18,7 @@ import config
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from prompts import POLICY_PROMPT
 
+from langchain_core.tools import tool
 llm = ChatOpenAI(model=config.model, temperature=config.temperature)
 
 def load_and_split_pdf(file_path: str):
@@ -48,8 +49,12 @@ def ensemble(docs, vectorstore, query):
     print(ensemble_docs)
     return ensemble_docs
 
-def RAG(state):
-    query = state["input"]
+@tool
+def RAG(query: str) -> str:
+    """
+    Tool to create a simple RAG pipeline
+    """
+    #query = state["messages"]
     split_docs = load_and_split_pdf(config.pdf_policy_path)
     vectorstore = create_vectorstore(split_docs)
 
@@ -61,4 +66,4 @@ def RAG(state):
         "context": context
     })
     print(type(rag_response))
-    return {"input": query, "output": rag_response}
+    return str(rag_response)

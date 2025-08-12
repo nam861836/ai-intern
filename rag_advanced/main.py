@@ -1,26 +1,16 @@
-from graph import create_langgraph
-from schema import getStateRoute
+from graph import create_supervisor_graph
+from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
 
-def getRoute(): 
-    return lambda state: state["route"]
+#from schema import getStateRoute
 
 def main():
-    graph = create_langgraph()
+    graph = create_supervisor_graph()
     while True:
-        query = input("Enter your query ('q' to quit): ")
+        query = input("Enter: ")
         if query.lower() == 'q':
             break
-        result = graph.invoke({"input": query})
-        get_route = lambda state: state["route"]
-        route = get_route(result)
-        if route == "tavily": 
-            #print(result)
-            print("Route: ", result["route"])
-            print("Answer: ", result["output"]["answer"])
-            #print("Source: ", type(result["output"]["results"][0]))
-        else: 
-            print(result)
-
+        result = graph.invoke({"messages": [HumanMessage(content=query)]})
+        print("Response: ", result["messages"][-1].content)
 
 if __name__ == "__main__":
     main()

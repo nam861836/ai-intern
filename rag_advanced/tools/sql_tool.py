@@ -11,6 +11,7 @@ from langchain.chains import LLMChain, create_sql_query_chain
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain.agents.agent_types import AgentType
+from langchain_core.tools import tool
 
 
 import config
@@ -31,10 +32,14 @@ def create_agent(db: SQLDatabase):
     )
     return agent
 
-def db_query(state):
-    query = state["input"]
+@tool
+def db_query(query: str) -> str:
+    """
+    Tool to query in DB
+    """
+    #query = state["messages"]
     agent_executor = create_agent(db)
     result = agent_executor.invoke({"input": query})
     #print(type(result))
-    return result
+    return str(result)
 

@@ -1,5 +1,6 @@
 from langchain_tavily import TavilySearch
 from config import tavily_api_key
+from langchain_core.tools import tool
 
 
 search_tool = TavilySearch(
@@ -11,7 +12,11 @@ search_tool = TavilySearch(
     description = "A search engine optimized for comprehensive, accurate, and trusted results. Useful for when you need to answer questions about current events. Input should be a search query."  
 )
 
-def tavily_search_tool(state):
-    query = state["input"]
-    result = search_tool.run(query)
-    return {"output": result}
+@tool
+def tavily_search_tool(query: str) -> str:
+    """
+    Tool to search web using Tavily
+    """
+    #query = state["messages"]
+    result = search_tool.invoke(query)
+    return str(result)
