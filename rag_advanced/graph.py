@@ -11,6 +11,7 @@ from typing import Literal
 from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
+from langgraph.checkpoint.memory import InMemorySaver
 
 
 #tools = [tavily_search_tool, db_query, RAG]  # Thêm các tool khác của bạn
@@ -24,7 +25,7 @@ def create_supervisor():
     tools = [tavily_search_tool, db_query, RAG]
     
     prompt = ChatPromptTemplate.from_messages([
-        ("system", prompts.supervisor_prompt),
+        ("system", prompts.system_prompt),
         MessagesPlaceholder("messages"),
     ])
     
@@ -54,6 +55,8 @@ tool_node = ToolNode([tavily_search_tool, db_query, RAG])
 def create_supervisor_graph():
     """Create the supervisor graph"""
     # Create the graph
+    checkpointer = InMemorySaver()
+    
     builder = StateGraph(GraphState)
     
     # Add nodes
@@ -76,4 +79,4 @@ def create_supervisor_graph():
     # Add edge from tools back to supervisor
     builder.add_edge("tools", "supervisor")
     
-    return builder.compile()
+    return builder.compile(checkpointer=checkpointer)
