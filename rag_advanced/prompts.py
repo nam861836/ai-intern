@@ -65,9 +65,9 @@ supervisor_prompt = """You are a supervisor agent that routes the user's query t
     You MUST call at least one of the tools below whenever the question requires external information.
 
     Available tools:
-    - db_query: For database queries involving user's data or tickets
-    - tavily_search_tool: For web search
-    - RAG: For document retrieval of company's policies
+    - db_query: if the question is about account details, billing, or support tickets
+    - RAG: if the question refers to internal company policies, employee handbooks, or document content
+    - tavily_search_tool: if the question is a general or technical query (e.g., troubleshooting, how-to, product comparisons, etc.)
 
     Rules:
     1. If you need any external data, ALWAYS call a tool — do not guess.

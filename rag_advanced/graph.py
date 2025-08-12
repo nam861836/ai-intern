@@ -1,6 +1,5 @@
 from langgraph.graph import StateGraph
 from schema import GraphState
-from router_node import route_query
 from tools.tavily_search import tavily_search_tool
 from tools.sql_tool import db_query
 from tools.vectordb_tool import RAG
