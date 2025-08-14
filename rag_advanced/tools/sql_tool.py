@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.insert(1, '/home/nam861836/ai-intern/rag_advanced')
+sys.path.insert(1, '/home/nam861836/Documents/ai-intern/rag_advanced')
 
 from langchain_community.utilities import SQLDatabase
 from langchain.chat_models import init_chat_model

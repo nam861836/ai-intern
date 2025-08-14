@@ -12,4 +12,4 @@ chunk_size = 1000
 chunk_overlap = 150
 
 pdf_policy_path = "/home/nam861836/ai-intern/rag_advanced/data/policy.pdf"
-db_path = "/home/nam861836/ai-intern/rag_advanced/data/user_ticket.db"
+db_path = "/home/nam861836/Documents/ai-intern/rag_advanced/data/user_ticket.db"
