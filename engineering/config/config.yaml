@@ -1,0 +1,49 @@
+chat_model_config:
+  provider: "openai"
+  deployment_name: "gpt-4.1-nano"
+  # kwargs for ChatModel
+  kwargs:
+    temperature: 0.1
+    max_tokens: 3000
+    streaming: True
+    max_retries: 1
+
+embedding_model_config:
+  provider: "openai"
+  deployment_name: "text-embedding-3-small"
+  # kwargs for EmbeddingModel
+  kwargs:
+    chunk_size: 2048
+
+retrieval_config:
+  retrievers:
+    - name: "multiquery_chroma"
+      provider: "chroma"
+      embeddings_model: "${embedding_model_config.deployment_name}"
+      search_type: "similarity"
+      kwargs:
+        k: 15
+        score_threshold: 0.3
+    - name: "bm25"
+      provider: "bm25"
+      kwargs:
+        k: 15
+
+  ensemble:
+    type: "weighted"
+    weights: [0.5, 0.5]
+
+  multiquery_llm:
+    provider: "${chat_model_config.provider}"
+    model: "${chat_model_config.deployment_name}"
+    kwargs:
+      temperature: 0.0
+
+  chunking_config:
+    chunk_size: 1000
+    chunk_overlap: 200
+
+  data_source:
+    type: "pdf"
+    path: "./data/policy.pdf"
+
