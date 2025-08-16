@@ -3,12 +3,13 @@ from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langchain.agents import AgentType
 from langchain_community.agent_toolkits.sql.base import create_sql_agent
 from factories.llmFactory import LLMFactory
-from config import configs
+#from config import configs
 
 class DBFactory:
     @staticmethod
     def create_db():
-        return SQLDatabase.from_uri(f"sqlite:///{configs.db_path}")
+        db_path = "/home/nam861836/Documents/ai-intern/engineering/data/user_ticket.db"
+        return SQLDatabase.from_uri(f"sqlite:///{db_path}")
 
     @staticmethod
     def create_sql_agent():

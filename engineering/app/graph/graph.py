@@ -5,7 +5,7 @@ from schemas.states import GraphState
 from tools.tavily_search_tool import tavily_search_tool
 from tools.db_query_tool import db_query
 from tools.RAG_tool import RAG
-from core.nodes.supervisor import supervisor_node, should_continue
+from graph.nodes.supervisor import supervisor_node, should_continue
 
 def create_supervisor_graph():
     checkpointer = InMemorySaver()
