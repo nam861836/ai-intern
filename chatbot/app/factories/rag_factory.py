@@ -7,7 +7,7 @@ from langchain_community.retrievers import BM25Retriever
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.prompts import ChatPromptTemplate
 from langchain.retrievers.multi_query import MultiQueryRetriever
-from factories.llmFactory import LLMFactory
+from factories.llm_factory import LLMFactory
 from config.base_config import BaseConfiguration
 from utils.prompts import POLICY_PROMPT
 

@@ -1,4 +1,4 @@
-from factories.ragFactory import RAGFactory
+from factories.rag_factory import RAGFactory
 from config.base_config import BaseConfiguration
 from langchain.tools import tool
 #from config import configs

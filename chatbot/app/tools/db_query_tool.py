@@ -1,4 +1,4 @@
-from factories.dbFactory import DBFactory
+from factories.db_factory import DBFactory
 from langchain.tools import tool
 
 @tool

@@ -1,4 +1,4 @@
-from factories.tavilyFactory import SearchFactory
+from factories.tavily_factory import SearchFactory
 from langchain.tools import tool
 
 @tool

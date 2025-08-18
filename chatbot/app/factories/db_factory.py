@@ -2,7 +2,7 @@ from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langchain.agents import AgentType
 from langchain_community.agent_toolkits.sql.base import create_sql_agent
-from factories.llmFactory import LLMFactory
+from factories.llm_factory import LLMFactory
 from config.base_config import BaseConfiguration
 
 class DBFactory:
