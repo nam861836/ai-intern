@@ -10,13 +10,18 @@ authors = [
     { name = "nam861836" }
 ]
 
-requires-python = ">=3.10"
+requires-python = ">=3.10, <4.0"
 dependencies = [
     "fastapi>=0.110.0",
     "uvicorn>=0.29.0",
     "langchain-core",
     "langgraph",
     "langchain-openai",
+    "langchain-tavily",
+    "langchain-community",
+    "langsmith",
+    "pypdf",
+    "rank-bm25",
     "pydantic>=2.0.0"
 ]
 

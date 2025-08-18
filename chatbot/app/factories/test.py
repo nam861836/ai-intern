@@ -1,5 +1,5 @@
-from llmFactory import LLMFactory
+from config.base_config import BaseConfiguration
 
-llm = LLMFactory.create()
-res = llm.invoke("Hello, how are you?")
-print(res)
+config = BaseConfiguration()
+print(config.db_path)
+print("Base configuration loaded successfully.")

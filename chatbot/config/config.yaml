@@ -15,6 +15,10 @@ embedding_model_config:
   kwargs:
     chunk_size: 2048
 
+path:
+  pdf: "data/policy.pdf"
+  db: "data/user_ticket.db"
+
 retrieval_config:
   retrievers:
     - name: "multiquery_chroma"

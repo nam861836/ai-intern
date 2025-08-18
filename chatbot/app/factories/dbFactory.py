@@ -3,7 +3,7 @@ from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langchain.agents import AgentType
 from langchain_community.agent_toolkits.sql.base import create_sql_agent
 from factories.llmFactory import LLMFactory
-#from config import configs
+from config.base_config import BaseConfiguration
 
 class DBFactory:
     @staticmethod

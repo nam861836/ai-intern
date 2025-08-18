@@ -32,6 +32,8 @@ class BaseConfiguration(BaseModel):
     chunk_overlap: int = Field(
         default_factory=lambda: get_value_from_dict("chunk_config.chunk_overlap", CONFIG, default=200)()
     )
+    pdf_path: str = Field(default_factory=lambda: get_value_from_dict("path.pdf", CONFIG, default="./data/policy.pdf")())
+    db_path: str = Field(default_factory=lambda: get_value_from_dict("path.db", CONFIG, default="./data/user_ticket.db")())
 
     chat_model_config: OpenAIConfig = Field(default_factory=OpenAIConfig)
     embedding_model_config: OpenAIConfig = Field(default_factory=OpenAIConfig)
