@@ -1,5 +1,6 @@
 import uuid
 from fastapi import FastAPI, Request
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
 from graph.graph import create_supervisor_graph
 from langchain_core.messages import HumanMessage
@@ -23,6 +24,15 @@ async def query_graph(request: QueryRequest):
     messages = result.get("messages", [])
     output = "\n".join([str(m.content) for m in messages if hasattr(m, "content")])
     return {"output": output, "messages": [m.content for m in messages if hasattr(m, "content")]}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "ok", "message": "Server is running"}
+
+# Redirect root to Swagger UI
+@app.get("/")
+async def root():
+    return RedirectResponse(url="/docs")
 
 
 if __name__ == "__main__":

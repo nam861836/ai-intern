@@ -1,0 +1,32 @@
+# TECH SUPPORT CHATBOT
+.
+├── app
+│   ├── api
+│   │   └── main.py
+│   ├── config
+│   │   ├── base_config.py
+│   │   └── config_loader.py
+│   ├── factories
+│   │   ├── dbFactory.py
+│   │   ├── llmFactory.py
+│   │   ├── ragFactory.py
+│   │   ├── tavilyFactory.py
+│   │   └── test.py
+│   ├── graph
+│   │   ├── graph.py
+│   │   └── nodes
+│   │       └── supervisor.py
+│   ├── main.py
+│   ├── schemas
+│   │   └── states.py
+│   ├── services
+│   ├── static
+│   ├── tools
+│   │   ├── db_query_tool.py
+│   │   ├── RAG_tool.py
+│   │   └── tavily_search_tool.py
+│   └── utils
+│       ├── prompts.py
+│       └── utils.py
+├── config
+└── data

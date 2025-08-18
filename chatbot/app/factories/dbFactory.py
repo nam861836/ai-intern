@@ -8,7 +8,7 @@ from factories.llmFactory import LLMFactory
 class DBFactory:
     @staticmethod
     def create_db():
-        db_path = "/home/nam861836/Documents/ai-intern/engineering/data/user_ticket.db"
+        db_path = "/home/nam861836/Documents/ai-intern/chatbot/data/user_ticket.db"
         return SQLDatabase.from_uri(f"sqlite:///{db_path}")
 
     @staticmethod
