@@ -1,5 +1,6 @@
 # TECH SUPPORT CHATBOT
-.
+
+<pre>
 ├── app
 │   ├── api
 │   │   └── main.py
@@ -7,10 +8,10 @@
 │   │   ├── base_config.py
 │   │   └── config_loader.py
 │   ├── factories
-│   │   ├── dbFactory.py
-│   │   ├── llmFactory.py
-│   │   ├── ragFactory.py
-│   │   ├── tavilyFactory.py
+│   │   ├── db_factory.py
+│   │   ├── llm_factory.py
+│   │   ├── rag_factory.py
+│   │   ├── tavily_factory.py
 │   │   └── test.py
 │   ├── graph
 │   │   ├── graph.py
@@ -20,13 +21,23 @@
 │   ├── schemas
 │   │   └── states.py
 │   ├── services
+│   │   └── mongodb.py
 │   ├── static
 │   ├── tools
 │   │   ├── db_query_tool.py
-│   │   ├── RAG_tool.py
+│   │   ├── rag_tool.py
 │   │   └── tavily_search_tool.py
 │   └── utils
 │       ├── prompts.py
 │       └── utils.py
 ├── config
-└── data
+│   └── config.yaml
+├── data
+│   ├── policy.pdf
+│   └── user_ticket.db
+├── Dockerfile
+├── pyproject.toml
+├── README.md
+├── structure.txt
+└── uv.lock
+</pre>
