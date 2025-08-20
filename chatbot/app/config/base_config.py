@@ -25,6 +25,9 @@ class OpenAIConfig(BaseModel):
 class TavilyConfig(BaseModel):
     api_key: SecretStr = Field(default_factory=secret_from_env("TAVILY_API_KEY"))
 
+class MongoDBConfig(BaseModel):
+    uri: str = Field(default_factory=from_env("MONGODB_URI"))
+
 class BaseConfiguration(BaseModel):
     chunk_size: int = Field(
         default_factory=lambda: get_value_from_dict("chunk_config.chunk_size", CONFIG, default=1000)()
@@ -38,3 +41,4 @@ class BaseConfiguration(BaseModel):
     chat_model_config: OpenAIConfig = Field(default_factory=OpenAIConfig)
     embedding_model_config: OpenAIConfig = Field(default_factory=OpenAIConfig)
     tavily_config: TavilyConfig = Field(default_factory=TavilyConfig)
+    mongodb_config: MongoDBConfig = Field(default_factory=MongoDBConfig)

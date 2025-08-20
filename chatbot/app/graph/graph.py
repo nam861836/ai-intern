@@ -7,8 +7,13 @@ from tools.db_query_tool import db_query
 from tools.rag_tool import RAG
 from graph.nodes.supervisor import supervisor_node, should_continue
 
+# from pymongo import MongoClient
+from langgraph.checkpoint.mongodb import MongoDBSaver
+from services.mongodb import client
+
+checkpointer = MongoDBSaver(client)
+
 def create_supervisor_graph():
-    checkpointer = InMemorySaver()
     builder = StateGraph(GraphState)
     
     # ToolNode với tất cả tool
