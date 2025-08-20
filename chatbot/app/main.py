@@ -9,7 +9,7 @@ def main():
     # Create the graph
     graph = create_supervisor_graph()
 
-    print("=== Supervisor Agent ===")
+    print("=== Chatbot ===")
     print("Type 'q' or 'quit' to exit.\n")
 
     while True:

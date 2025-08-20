@@ -1,3 +1,5 @@
+tree -I "__pycache__|__init__.py|*.pyc|*.pyo|*.egg-info|.git" > structure.txt
+
 .
 ├── app
 │   ├── api

@@ -12,11 +12,12 @@ from langgraph.checkpoint.mongodb import MongoDBSaver
 from services.mongodb import client
 
 checkpointer = MongoDBSaver(client)
+# checkpointer = InMemorySaver()
 
 def create_supervisor_graph():
     builder = StateGraph(GraphState)
     
-    # ToolNode với tất cả tool
+    # ToolNode with all tools
     tool_node = ToolNode([tavily_search_tool, db_query, RAG])
     
     # Add nodes
