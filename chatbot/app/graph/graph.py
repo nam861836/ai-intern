@@ -11,10 +11,12 @@ from graph.nodes.supervisor import supervisor_node, should_continue
 from langgraph.checkpoint.mongodb import MongoDBSaver
 from services.mongodb import client
 
-checkpointer = MongoDBSaver(client)
-# checkpointer = InMemorySaver()
 
 def create_supervisor_graph():
+    
+    checkpointer = MongoDBSaver(client)
+    #checkpointer = InMemorySaver()
+    
     builder = StateGraph(GraphState)
     
     # ToolNode with all tools

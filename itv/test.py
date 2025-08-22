@@ -11,34 +11,8 @@ openai_api_key = os.environ["OPENAI_API_KEY"]
 model = os.environ["OPENAI_MODEL"]
 temperature = os.environ["TEMPERATURE"]
 
-class MLOpsQuizBot:
-    def __init__(self, csv_file_path, openai_api_key=None):
-        """
-        Initialize MLOps quiz chatbot
-        
-        Args:
-            csv_file_path (str): Path to CSV file containing questions and answers
-            openai_api_key (str): OpenAI API key (can be set via environment variable)
-        """
-        # Set up OpenAI API key
-        if openai_api_key:
-            os.environ["OPENAI_API_KEY"] = openai_api_key
-        
-        # Initialize LLM
-        self.llm = ChatOpenAI(
-            model="gpt-4o-mini",
-            temperature=0.3,  # Reduce randomness for consistent scoring
-            max_tokens=500
-        )
-        
-        # Load data from CSV
-        self.load_data(csv_file_path)
-        
-        # Create prompt template for scoring
-        self.scoring_prompt = PromptTemplate(
-            input_variables=["original_answer", "user_answer"],
-            template="""
-You are an MLOps expert and experienced teacher. Your task is to score the student's answer based on the standard answer.
+system_template = """
+You are an MLOps expert and experienced teacher. Your task is to score the interviewee's answer based on the standard answer.
 
 # SCORING GUIDELINES:
 - Score range: 0-10 (integer)
@@ -73,6 +47,34 @@ DETAILED EVALUATION:
 SCORE EXPLANATION:
 [Reason for giving this score, comparison with standard answer]
 """
+
+class MLOpsQuizBot:
+    def __init__(self, csv_file_path, openai_api_key=None):
+        """
+        Initialize MLOps quiz chatbot
+        
+        Args:
+            csv_file_path (str): Path to CSV file containing questions and answers
+            openai_api_key (str): OpenAI API key (can be set via environment variable)
+        """
+        # Set up OpenAI API key
+        if openai_api_key:
+            os.environ["OPENAI_API_KEY"] = openai_api_key
+        
+        # Initialize LLM
+        self.llm = ChatOpenAI(
+            model="gpt-4o-mini",
+            temperature=0.3,  # Reduce randomness for consistent scoring
+            max_tokens=500
+        )
+        
+        # Load data from CSV
+        self.load_data(csv_file_path)
+        
+        # Create prompt template for scoring
+        self.scoring_prompt = PromptTemplate(
+            input_variables=["original_answer", "user_answer"],
+            template=system_template
         )
     
     def load_data(self, csv_file_path):

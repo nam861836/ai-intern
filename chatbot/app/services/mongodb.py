@@ -13,15 +13,3 @@ try:
 except Exception as e:
     print(e)
 
-
-def save_message(thread_id: str, message_type: str, content: str):
-    messages_collection = client["chat_history"]["messages"]
-    doc = {
-        "thread_id": thread_id,
-        "message_type": message_type,
-        "content": content,
-        "timestamp": datetime
-    }
-    messages_collection.insert_one(doc)
-    
-

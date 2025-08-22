@@ -27,6 +27,10 @@ class TavilyConfig(BaseModel):
 
 class MongoDBConfig(BaseModel):
     uri: str = Field(default_factory=from_env("MONGODB_URI"))
+    
+class RedisConfig(BaseModel):
+    host: str = Field(default_factory=from_env("REDIS_HOST"))
+    password: SecretStr = Field(default_factory=secret_from_env("REDIS_PASSWORD"))
 
 class BaseConfiguration(BaseModel):
     chunk_size: int = Field(
@@ -42,3 +46,4 @@ class BaseConfiguration(BaseModel):
     embedding_model_config: OpenAIConfig = Field(default_factory=OpenAIConfig)
     tavily_config: TavilyConfig = Field(default_factory=TavilyConfig)
     mongodb_config: MongoDBConfig = Field(default_factory=MongoDBConfig)
+    redis_config: RedisConfig = Field(default_factory=RedisConfig)
