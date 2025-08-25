@@ -7,6 +7,7 @@ tree -I "__pycache__|__init__.py|*.pyc|*.pyo|*.egg-info|.git" > structure.txt
 │   ├── config
 │   │   ├── base_config.py
 │   │   └── config_loader.py
+│   ├── demo.py
 │   ├── factories
 │   │   ├── db_factory.py
 │   │   ├── llm_factory.py
@@ -21,8 +22,10 @@ tree -I "__pycache__|__init__.py|*.pyc|*.pyo|*.egg-info|.git" > structure.txt
 │   ├── schemas
 │   │   └── states.py
 │   ├── services
-│   │   └── mongodb.py
+│   │   ├── mongodb.py
+│   │   └── redis_caching.py
 │   ├── static
+│   │   └── demo.py
 │   ├── tools
 │   │   ├── db_query_tool.py
 │   │   ├── rag_tool.py
@@ -41,4 +44,4 @@ tree -I "__pycache__|__init__.py|*.pyc|*.pyo|*.egg-info|.git" > structure.txt
 ├── structure.txt
 └── uv.lock
 
-13 directories, 26 files
+13 directories, 29 files

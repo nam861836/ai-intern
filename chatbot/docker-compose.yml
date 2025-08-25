@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    container_name: project_backend
+    ports:
+      - "8000:8000"
+    # volumes:
+    #   - ./data:/app/data
+    #   - ./config:/app/config
+    restart: unless-stopped
+# .env
+# bo volume
+# reverse proxy: nginx
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: project_frontend
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    # volumes:
+    #   - ./data:/app/data
+    #   - ./config:/app/config
+    restart: unless-stopped

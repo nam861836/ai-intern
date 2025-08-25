@@ -28,7 +28,7 @@ def redis_caching() -> Optional[redis.Redis]:
             host=config.redis_config.host,
             port=19002,
             password=config.redis_config.password.get_secret_value(),
-            max_connections=500,
+            max_connections=50,
             decode_responses=True,
             socket_connect_timeout=5,
             socket_timeout=5,
