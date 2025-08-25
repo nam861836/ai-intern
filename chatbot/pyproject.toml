@@ -12,7 +12,7 @@ authors = [
 
 requires-python = ">=3.10, <4.0"
 dependencies = [
-    "fastapi>=0.110.0",
+    "fastapi[standard]>=0.110.0",
     "uvicorn>=0.29.0",
     "langchain-core",
     "langgraph",
@@ -25,8 +25,7 @@ dependencies = [
     "pydantic>=2.0.0",
     "langgraph-checkpoint",
     "langgraph-checkpoint-mongodb",
-    "redis"
+    "redis",
+    "streamlit>=1.48.1",
+    "requests>=2.32.4",
 ]
-
-[tool.setuptools.packages.find]
-where = ["app"]

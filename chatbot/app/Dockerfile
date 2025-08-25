@@ -28,11 +28,11 @@ FROM ghcr.io/astral-sh/uv:python3.11-bookworm-slim AS builder
 
 WORKDIR /app
 
-COPY app/pyproject.toml /app/
-COPY app/uv.lock /app/
+COPY pyproject.toml /app/
+COPY uv.lock /app/
 COPY app ./app
-COPY config ./config
-COPY data ./data
+# COPY config ./config
+# COPY data ./data
 
 # Install dependencies and project into /app/.venv
 RUN uv venv .venv 
@@ -56,4 +56,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["fastapi", "dev", "app/api/main.py", "--host", "0.0.0.0", "--port", "8000"]
