@@ -11,6 +11,8 @@ services:
     # volumes:
     #   - ./data:/app/data
     #   - ./config:/app/config
+    networks:
+      - project_network
     restart: unless-stopped
 # .env
 # bo volume
@@ -26,7 +28,13 @@ services:
       - API_URL=http://backend:8000/v1
     depends_on:
       - backend
+    networks:
+      - project_network
     # volumes:
     #   - ./data:/app/data
     #   - ./config:/app/config
     restart: unless-stopped
+
+networks:
+  project_network:
+    driver: bridge
