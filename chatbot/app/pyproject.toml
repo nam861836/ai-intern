@@ -22,7 +22,10 @@ dependencies = [
     "langsmith",
     "pypdf",
     "rank-bm25",
-    "pydantic>=2.0.0"
+    "pydantic>=2.0.0",
+    "langgraph-checkpoint",
+    "langgraph-checkpoint-mongodb",
+    "redis"
 ]
 
 [tool.setuptools.packages.find]

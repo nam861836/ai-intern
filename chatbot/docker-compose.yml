@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: app/Dockerfile
+    env_file:
+      - .env
     container_name: project_backend
     ports:
       - "8000:8000"
