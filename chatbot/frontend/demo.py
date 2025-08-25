@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-API_URL = "http://localhost:8000/v1"
+API_URL = "http://backend:8000/v1"
 
 st.set_page_config(page_title="Chatbot", page_icon="🤖", layout="wide")
 st.title("Tech Support Chatbot")
