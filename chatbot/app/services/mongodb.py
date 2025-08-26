@@ -1,15 +1,21 @@
-from pymongo.mongo_client import MongoClient
+from pymongo import MongoClient
 from pymongo.server_api import ServerApi
-from config.base_config import BaseConfiguration
-from datetime import datetime
+from config.base_config import BaseConfiguration  # tùy bạn import thế nào
 
-config = BaseConfiguration()
-# Create a new client and connect to the server
-client = MongoClient(config.mongodb_config.uri, server_api=ServerApi('1'))
-# Send a ping to confirm a successful connection
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
+def get_mongo_client():
+    """
+    Create a MongoDB client and test connection.
+    Returns:
+        MongoClient | None
+    """
+    config = BaseConfiguration()
+    client = MongoClient(config.mongodb_config.uri, server_api=ServerApi('1'))
+
+    try:
+        client.admin.command('ping')
+        print("✅ Pinged your deployment. Successfully connected to MongoDB!")
+        return client
+    except Exception as e:
+        print(f"❌ MongoDB connection failed: {e}")
+        return None
 

@@ -9,11 +9,14 @@ from graph.nodes.supervisor import supervisor_node, should_continue
 
 # from pymongo import MongoClient
 from langgraph.checkpoint.mongodb import MongoDBSaver
-from services.mongodb import client
+from services.mongodb import get_mongo_client
 
 
 def create_supervisor_graph():
-    
+    client = get_mongo_client()
+    if not client:
+        raise ValueError("Failed to create MongoDB client")
+
     checkpointer = MongoDBSaver(client)
     #checkpointer = InMemorySaver()
     

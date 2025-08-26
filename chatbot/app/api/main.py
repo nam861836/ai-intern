@@ -5,9 +5,10 @@ from pydantic import BaseModel, Field
 from graph.graph import create_supervisor_graph
 from langchain_core.messages import HumanMessage
 from services.redis_caching import redis_caching
-from services.mongodb import client
+from services.mongodb import get_mongo_client
 
 redis_client = redis_caching()
+client = get_mongo_client()
 
 checkpoint_db = client["checkpointing_db"]
 checkpoints_col = checkpoint_db["checkpoints"]
