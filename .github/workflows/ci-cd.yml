@@ -49,5 +49,7 @@ jobs:
           uv sync
       - name: Run unit tests
         run: |
+          cd chatbot
+          source .venv/bin/activate
           uv pip list
-          PYTHONPATH=./chatbot uv run pytest chatbot/tests
+          uv run pytest tests
