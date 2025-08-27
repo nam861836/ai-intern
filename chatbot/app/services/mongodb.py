@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
-from config.base_config import BaseConfiguration  # tùy bạn import thế nào
+from config.base_config import BaseConfiguration
 
 def get_mongo_client():
     """

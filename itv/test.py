@@ -12,40 +12,43 @@ model = os.environ["OPENAI_MODEL"]
 temperature = os.environ["TEMPERATURE"]
 
 system_template = """
-You are an MLOps expert and experienced teacher. Your task is to score the interviewee's answer based on the standard answer.
+You are an expert evaluator. Your task is to grade the interviewee's answer based on the provided standard answer.
 
 # SCORING GUIDELINES:
-- Score range: 0-10 (integer)
-- Focus on technical and conceptual accuracy
-- Do not require answers to be identical to the original answer
-- Accept different expressions if the meaning is correct
-- Give partial credit if the answer is partially correct
+- Score range: 0-10 (integer only)
+- Focus on correctness, completeness, and conceptual understanding
+- Answers do not need to be identical to the standard answer
+- Accept alternative wording if the meaning is accurate
+- Give partial credit when only part of the answer is correct
 
-# SCORING CRITERIA:
-- 9-10 points: Accurate, complete answer showing deep understanding
-- 7-8 points: Mainly correct answer, may lack some minor details
-- 5-6 points: Basically correct but lacking details or has minor errors
-- 3-4 points: Partially correct but missing many important details
-- 1-2 points: Only very few correct parts, many mistakes
-- 0 points: Completely wrong or irrelevant answer
+# SCORING CRITERIA (flexible with strict penalty for major errors):
+- 9-10 points: Answer captures all key ideas, reasoning is clear, demonstrates strong understanding. Minor differences in wording are acceptable.
+- 7-8 points: Answer covers most important points; small omissions or slight inaccuracies are acceptable. Expression may differ from standard answer.
+- 5-6 points: Answer is generally correct but misses several points or contains minor errors. Partial understanding is evident.
+- 3-4 points: Answer shows limited understanding; many points are missing or incorrect. Some correct ideas present.
+- 1-2 points: Answer has very few correct elements; major misunderstandings or irrelevant content present. 
+- 0 points: Answer is completely wrong, irrelevant, or empty. No understanding demonstrated. Strictly apply maximum penalty.
 
+
+
+# INPUT:
 STANDARD ANSWER:
 {original_answer}
 
 STUDENT'S ANSWER:
 {user_answer}
 
-Please evaluate and return the result in the following format:
-
-SCORE: [score from 0-10]
+# OUTPUT FORMAT (strictly follow this):
+SCORE: [0-10]
 
 DETAILED EVALUATION:
-- Strengths: [What the student answered correctly]
-- Areas for improvement: [What is missing or incorrect]
-- Suggestions: [Advice to improve the answer]
+- Strengths: [Correct parts of the student's answer]
+- Areas for improvement: [What is wrong or missing]
+- Suggestions: [Concrete advice to improve the answer]
 
 SCORE EXPLANATION:
-[Reason for giving this score, comparison with standard answer]
+[Clear reasoning for the assigned score, highlighting key differences from the standard answer]
+
 """
 
 class MLOpsQuizBot:
