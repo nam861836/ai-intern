@@ -30,3 +30,6 @@ dependencies = [
     "requests>=2.32.4",
     "pytest"
 ]
+
+[tool.setuptools]
+py-modules = []
