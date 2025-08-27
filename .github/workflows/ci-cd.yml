@@ -45,7 +45,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd chatbot
+          pip install uv
           uv sync
       - name: Run unit tests
-        run:
+        run: |
           PYTHONPATH=./chatbot pytest chatbot/tests
