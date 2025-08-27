@@ -50,4 +50,4 @@ jobs:
       - name: Run unit tests
         run: |
           uv pip list
-          PYTHONPATH=./chatbot pytest chatbot/tests
+          PYTHONPATH=./chatbot uv run pytest chatbot/tests
