@@ -49,4 +49,5 @@ jobs:
           uv sync
       - name: Run unit tests
         run: |
+          uv pip list
           PYTHONPATH=./chatbot pytest chatbot/tests
