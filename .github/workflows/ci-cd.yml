@@ -49,6 +49,8 @@ jobs:
           pip install uv
           uv sync --frozen
       - name: Run unit tests
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           cd chatbot
           source .venv/bin/activate
