@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from app.api.main import app
+from api.main import app
 
 @pytest.fixture
 def client():
@@ -16,7 +16,7 @@ def test_root_redirect(client):
     assert resp.status_code in (200, 307, 302)
 
 def test_new_session(client, monkeypatch):
-    monkeypatch.setattr('app.api.main.redis_client', type('FakeRedis', (), {'sadd': lambda self, k, v: True})())
+    monkeypatch.setattr('api.main.redis_client', type('FakeRedis', (), {'sadd': lambda self, k, v: True})())
     resp = client.post('/v1/sessions/new')
     assert resp.status_code == 200
     assert 'thread_id' in resp.json()

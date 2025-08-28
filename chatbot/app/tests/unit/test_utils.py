@@ -1,5 +1,5 @@
 import pytest
-from app.utils.utils import get_value_from_dict
+from utils.utils import get_value_from_dict
 
 def test_get_value_from_dict_single_key():
     data = {'a': 1, 'b': 2}

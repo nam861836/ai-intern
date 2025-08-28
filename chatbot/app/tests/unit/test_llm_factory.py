@@ -1,8 +1,8 @@
 from unittest.mock import patch, MagicMock
-from app.factories.llm_factory import LLMFactory
+from factories.llm_factory import LLMFactory
 
-@patch('app.factories.llm_factory.ChatOpenAI')
-@patch('app.factories.llm_factory.config')
+@patch('factories.llm_factory.ChatOpenAI')
+@patch('factories.llm_factory.config')
 def test_llm_factory_create(mock_config, mock_chat_openai):
     mock_config.chat_model_config.model = 'gpt-3.5'
     mock_config.chat_model_config.temperature = 0.1
