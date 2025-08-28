@@ -36,6 +36,7 @@ jobs:
           echo test, and deploy your project.
   test:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.10
@@ -56,7 +57,7 @@ jobs:
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
           OPENAI_EMBED_MODEL: ${{ vars.OPENAI_EMBED_MODEL }}
           OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
-          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_HOST: ${{ vars.REDIS_HOST }}
           TEMPERATURE: ${{ vars.TEMPERATURE }}
         run: |
           cd chatbot
