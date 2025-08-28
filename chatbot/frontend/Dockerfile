@@ -20,4 +20,4 @@ EXPOSE 8501
 
 # Use 'uv run' which correctly handles the environment path.
 # This is the most reliable way to run a command installed by uv.
-CMD ["uv", "run", "streamlit", "run", "demo.py"]
+CMD ["uv", "run", "streamlit", "run", "app/demo.py"]
