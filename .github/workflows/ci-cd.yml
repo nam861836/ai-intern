@@ -45,7 +45,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd chatbot
-          pwd
+          pwd && ls -la
           pip install uv
           uv sync --frozen
       - name: Run unit tests

@@ -35,3 +35,6 @@ dependencies = [
 addopts = [
     "--import-mode=importlib",
 ]
+
+[tool.setuptools]
+packages = ["app"]
