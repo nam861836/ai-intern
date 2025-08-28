@@ -46,6 +46,8 @@ jobs:
         run: |
           cd chatbot
           pip install uv
+          uv venv
+          ln -s .venv/bin/activate
           uv sync
       - name: Run unit tests
         run: |
