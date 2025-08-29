@@ -63,7 +63,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build backend image with docker compose
-        run: docker compose build backend
+        run: |
+          cd chatbot && pwd
+          docker compose build backend
 
       - name: Tag and push backend image
         run: |
