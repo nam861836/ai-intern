@@ -63,4 +63,4 @@ jobs:
           cd chatbot
           source .venv/bin/activate
           cd app
-          python -m pytest tests/unit
+          python -m pytest tests
