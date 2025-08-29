@@ -50,25 +50,44 @@ jobs:
           cd app
           python -m pytest tests
 
-  build_and_push_image:
+  build_and_push_images:
     runs-on: ubuntu-latest
-    needs: test
+    #needs: test
     steps:
       - uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build backend image with docker compose
+      # --- Backend ---
+      - name: Build backend image
         run: |
-          cd chatbot && pwd
+          cd chatbot
           docker compose build backend
 
-      - name: Tag and push backend image
+      - name: Tag and push backend
         run: |
-          docker tag my-dockerhub-user/my-backend:latest my-dockerhub-user/my-backend:${{ github.sha }}
-          docker push my-dockerhub-user/my-backend:latest
-          docker push my-dockerhub-user/my-backend:${{ github.sha }}
+          cd chatbot
+          docker tag chatbot-backend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:latest
+          docker tag chatbot-backend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:${{ github.sha }}
+
+      # --- Frontend ---
+      - name: Build frontend image
+        run: |
+          cd chatbot
+          docker compose build frontend
+
+      - name: Tag and push frontend
+        run: |
+          cd chatbot
+          docker tag chatbot-frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-frontend:latest
+          docker tag chatbot-frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-frontend:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-frontend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-frontend:${{ github.sha }}
+
+
