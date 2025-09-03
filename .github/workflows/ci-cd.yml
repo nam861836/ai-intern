@@ -50,9 +50,8 @@ jobs:
           cd app
           python -m pytest tests
 
-  build_and_push_images:
+  backend:
     runs-on: ubuntu-latest
-    #needs: test
     steps:
       - uses: actions/checkout@v4
 
@@ -62,27 +61,37 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # --- Backend ---
       - name: Build backend image
         run: |
-          cd chatbot
-          docker compose build backend
+            cd chatbot
+            docker compose build backend
 
-      - name: Tag and push backend
+      - name: Tag and push backend image
         run: |
-          cd chatbot
-          docker tag chatbot-backend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:latest
-          docker tag chatbot-backend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:${{ github.sha }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:${{ github.sha }}
+            cd chatbot
+            docker tag chatbot-backend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:latest
+            docker tag chatbot-backend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:${{ github.sha }}
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:latest
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-backend:${{ github.sha }}
 
-      # --- Frontend ---
+  # --- Frontend ---
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build frontend image
         run: |
           cd chatbot
           docker compose build frontend
 
-      - name: Tag and push frontend
+      - name: Tag and push frontend image
         run: |
           cd chatbot
           docker tag chatbot-frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chatbot-frontend:latest
