@@ -33,9 +33,10 @@ COPY uv.lock /app/
 COPY app ./app
 # COPY config ./config
 # COPY data ./data
-
+COPY config ./config
+COPY data ./data
 # Install dependencies and project into /app/.venv
-RUN uv venv .venv 
+# RUN uv venv .venv 
 RUN uv sync --frozen --no-dev
 
 # --- Runtime stage ---
@@ -45,11 +46,9 @@ WORKDIR /app
 
 # Copy virtual environment from builder
 COPY --from=builder /app/.venv /app/.venv
-
-# Copy app code and config
-COPY app ./app
-COPY config ./config
-COPY data ./data
+COPY --from=builder /app/app /app/app
+COPY --from=builder /app/config /app/config
+COPY --from=builder /app/data /app/data
 
 ENV PYTHONPATH=/app/app
 ENV PATH="/app/.venv/bin:$PATH"

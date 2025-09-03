@@ -17,6 +17,7 @@ services:
 # .env
 # bo volume
 # reverse proxy: nginx
+# check health
   frontend:
     build:
       context: .
@@ -37,3 +38,4 @@ services:
 
 networks:
   project_network:
+    driver: bridge
