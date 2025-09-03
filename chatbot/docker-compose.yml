@@ -8,16 +8,16 @@ services:
     container_name: project_backend
     ports:
       - "8000:8000"
-    # volumes:
-    #   - ./data:/app/data
-    #   - ./config:/app/config
     networks:
       - project_network
     restart: unless-stopped
-# .env
-# bo volume
-# reverse proxy: nginx
-# check health
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
   frontend:
     build:
       context: .
@@ -28,12 +28,10 @@ services:
     environment:
       - API_URL=http://backend:8000/v1
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - project_network
-    # volumes:
-    #   - ./data:/app/data
-    #   - ./config:/app/config
     restart: unless-stopped
 
 networks:
