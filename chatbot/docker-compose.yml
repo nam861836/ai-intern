@@ -11,12 +11,12 @@ services:
     networks:
       - project_network
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 5s
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -sf http://localhost:8000/health || exit 1"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
+    #   start_period: 30s
 
   frontend:
     build:
@@ -28,8 +28,8 @@ services:
     environment:
       - API_URL=http://backend:8000/v1
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
+        # condition: service_healthy
     networks:
       - project_network
     restart: unless-stopped
